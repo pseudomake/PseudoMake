@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PseudoMake — Votre identité, composée sur mesure</title>
+<meta name="description" content="PseudoMake compose des pseudos originaux pour le jeu, les réseaux, le streaming, la fantasy et plus encore.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span></div>
+
+<header class="topbar">
+  <button class="brand" data-view="home" aria-label="Accueil PseudoMake"><span class="logo">◈</span>Pseudo<b>Make</b></button>
+  <button id="menuBtn" class="icon-btn" aria-label="Menu">☰</button>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <button class="brand" data-view="home"><span class="logo">◈</span>Pseudo<b>Make</b></button>
+  <nav>
+    <button class="nav-btn" data-view="home"><span>⌂</span>Accueil</button>
+    <button class="nav-btn" data-view="generator"><span>✦</span>Générateur</button>
+    <button class="nav-btn" data-view="explore"><span>◎</span>Explorer</button>
+    <button class="nav-btn" data-view="favorites"><span>♥</span>Mes favoris <em id="favCount">0</em></button>
+    <button class="nav-btn" data-view="tools"><span>⚙</span>Outils pratiques</button>
+  </nav>
+  <p class="side-foot">Aucun compte requis.<br>Vos favoris restent sur cet appareil.</p>
+</aside>
+
+<main>
+  <!-- ACCUEIL -->
+  <section class="view" id="view-home">
+    <div class="hero card">
+      <p class="eyebrow">Atelier d'identités numériques</p>
+      <h1>Un nom qui vous ressemble,<br><span class="grad">composé en quelques secondes.</span></h1>
+      <p class="lead">Choisissez une ambiance, un univers, un mot de départ. PseudoMake assemble syllabes, racines et touches finales pour vous proposer huit pseudos uniques à chaque fois.</p>
+      <button class="btn primary big" id="startBtn">Commencer à créer →</button>
+      <ul class="stats">
+        <li><b>12</b> univers</li><li><b>5</b> styles</li><li><b>6</b> outils</li><li><b>0</b> inscription</li>
+      </ul>
+    </div>
+    <h2>Les univers disponibles</h2>
+    <div class="chips" id="homeUniverses"></div>
+    <div class="grid3 steps">
+      <div class="card"><span class="step">1</span><h3>Réglez</h3><p>Style, univers, longueur, options : tout influence le résultat.</p></div>
+      <div class="card"><span class="step">2</span><h3>Composez</h3><p>Le moteur mélange syllabes, mots, chiffres et symboles avec cohérence.</p></div>
+      <div class="card"><span class="step">3</span><h3>Gardez</h3><p>Copiez d'un clic ou rangez vos préférés dans vos favoris.</p></div>
+    </div>
+  </section>
+
+  <!-- GÉNÉRATEUR -->
+  <section class="view" id="view-generator">
+    <h1 class="page-title">Générateur</h1>
+    <div class="gen-layout">
+      <form class="card settings" id="genForm" autocomplete="off">
+        <fieldset><legend>Style</legend><div class="pills" id="styleList"></div></fieldset>
+        <fieldset><legend>Univers</legend><div class="pills" id="universeList"></div></fieldset>
+        <fieldset><legend>Mot personnalisé <small>(facultatif)</small></legend>
+          <input type="text" id="customWord" maxlength="14" placeholder="Prénom, surnom, expression…">
+        </fieldset>
+        <fieldset><legend>Longueur</legend>
+          <div class="pills" id="lengthPresets">
+            <button type="button" class="pill" data-min="4" data-max="8">Court</button>
+            <button type="button" class="pill active" data-min="7" data-max="12">Moyen</button>
+            <button type="button" class="pill" data-min="11" data-max="20">Long</button>
+          </div>
+          <details class="adv"><summary>Réglage précis</summary>
+            <label>Minimum : <b id="minVal">7</b> car.<input type="range" id="minLen" min="4" max="20" value="7"></label>
+            <label>Maximum : <b id="maxVal">12</b> car.<input type="range" id="maxLen" min="4" max="20" value="12"></label>
+          </details>
+        </fieldset>
+        <fieldset><legend>Options</legend>
+          <label class="switch"><input type="checkbox" id="optDigits" checked><i></i>Chiffres</label>
+          <label class="switch"><input type="checkbox" id="optSymbols"><i></i>Symboles</label>
+          <label class="switch"><input type="checkbox" id="optPron"><i></i>Prononçable</label>
+        </fieldset>
+        <button type="submit" class="btn primary big" id="genBtn">✦ Générer 8 pseudos</button>
+      </form>
+      <div class="results-wrap">
+        <div class="composing" id="composing" hidden><span></span><span></span><span></span> Composition en cours…</div>
+        <div class="empty card" id="resultsEmpty"><div class="big-ico">✦</div><h3>Vos pseudos apparaîtront ici</h3><p>Réglez vos préférences puis lancez la composition.</p></div>
+        <div class="results" id="results"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORER -->
+  <section class="view" id="view-explore">
+    <h1 class="page-title">Explorer les univers</h1>
+    <p class="lead">Touchez une carte : l'univers est sélectionné et une première composition démarre.</p>
+    <div class="grid3" id="exploreGrid"></div>
+  </section>
+
+  <!-- FAVORIS -->
+  <section class="view" id="view-favorites">
+    <div class="row-between"><h1 class="page-title">Mes favoris</h1><button class="btn ghost" id="clearFavs">Tout effacer</button></div>
+    <div class="favs" id="favList"></div>
+    <div class="empty card" id="favEmpty"><div class="big-ico">♡</div><h3>Aucun favori pour l'instant</h3><p>Appuyez sur le cœur d'un pseudo pour le retrouver ici.</p><button class="btn primary" data-view="generator">Créer un pseudo</button></div>
+  </section>
+
+  <!-- OUTILS -->
+  <section class="view" id="view-tools">
+    <h1 class="page-title">Outils pratiques</h1>
+    <div class="tabs" id="toolTabs">
+      <button class="pill active" data-tool="symbols">Symboles</button>
+      <button class="pill" data-tool="fancy">Texte stylé</button>
+      <button class="pill" data-tool="emojis">Emojis</button>
+      <button class="pill" data-tool="password">Mot de passe</button>
+      <button class="pill" data-tool="decor">Styliser un pseudo</button>
+      <button class="pill" data-tool="tester">Testeur</button>
+    </div>
+
+    <div class="card tool" id="tool-symbols"><div id="symbolBox"></div></div>
+
+    <div class="card tool" id="tool-fancy" hidden>
+      <input type="text" id="fancyInput" placeholder="Saisissez votre texte…" maxlength="40">
+      <div class="list" id="fancyOut"></div>
+    </div>
+
+    <div class="card tool" id="tool-emojis" hidden><div id="emojiBox"></div></div>
+
+    <div class="card tool" id="tool-password" hidden>
+      <div class="pwd-out"><code id="pwdOut">—</code><button class="btn ghost" id="pwdCopy">Copier</button></div>
+      <label>Longueur : <b id="pwdLenVal">16</b><input type="range" id="pwdLen" min="6" max="48" value="16"></label>
+      <label class="switch"><input type="checkbox" id="pwdUp" checked><i></i>Majuscules</label>
+      <label class="switch"><input type="checkbox" id="pwdLow" checked><i></i>Minuscules</label>
+      <label class="switch"><input type="checkbox" id="pwdNum" checked><i></i>Chiffres</label>
+      <label class="switch"><input type="checkbox" id="pwdSym" checked><i></i>Symboles</label>
+      <button class="btn primary" id="pwdGen">Générer</button>
+    </div>
+
+    <div class="card tool" id="tool-decor" hidden>
+      <input type="text" id="decorInput" placeholder="Votre pseudo existant…" maxlength="24">
+      <div class="list" id="decorOut"></div>
+    </div>
+
+    <div class="card tool" id="tool-tester" hidden>
+      <input type="text" id="testInput" placeholder="Testez un pseudo…" maxlength="30">
+      <div id="testOut" class="test-out"></div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="scrim" id="scrim"></div>
+<script src="app.js"></script>
+</body>
+</html>
